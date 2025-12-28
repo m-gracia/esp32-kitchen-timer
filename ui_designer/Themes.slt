@@ -1,0 +1,57 @@
+{
+  "deftheme": {
+    "name": "Default",
+    "properties": [
+      {
+        "nid": 1000283,
+        "strtype": "THEME_COLOR",
+        "strval": "colorShadow",
+        "intarray": [
+          32,
+          149,
+          246,
+          255
+        ],
+        "InheritedType": 0
+      },
+      {
+        "nid": 1000284,
+        "strtype": "THEME_COLOR",
+        "strval": "colorMainicons",
+        "intarray": [
+          255,
+          255,
+          255,
+          255
+        ],
+        "InheritedType": 0
+      },
+      {
+        "nid": 1000296,
+        "strtype": "THEME_COLOR",
+        "strval": "colorTimerDef",
+        "intarray": [
+          32,
+          149,
+          246,
+          255
+        ],
+        "InheritedType": 0
+      },
+      {
+        "nid": 1000297,
+        "strtype": "THEME_COLOR",
+        "strval": "colorTimerOut",
+        "intarray": [
+          197,
+          0,
+          0,
+          255
+        ],
+        "InheritedType": 0
+      }
+    ]
+  },
+  "themes": [],
+  "selected_theme": "Default"
+}
