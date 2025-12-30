@@ -36,3 +36,6 @@ A _secrets.h_ file must be created inside of the _/include_ folder with this dat
 
 #endif  // _SECRETS_H_
 ```
+
+
+xxd -i beepbeep.wav beepbeep.h

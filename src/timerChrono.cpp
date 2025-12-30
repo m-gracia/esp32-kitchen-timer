@@ -1,18 +1,18 @@
 #include "timerChrono.h"
 
 timerChrono::timerChrono() {
-    stop(); // Inicializa variables
+    stop();
 }
 
 timerChrono::~timerChrono() {
-    // Destructor (vacío si no hay punteros dinámicos)
+    // Destructor
 }
 
 void timerChrono::start(bool timerMode, int minutes){
     if (timerMode == TIMER_MODE_TIMER) {
         timerTime = millis() + (minutes * 60 * 1000);
         timerStatus = STATUS_TIMER_ON;
-    } else { //TIMER_MODE_CHRONO
+    } else { // TIMER_MODE_CHRONO
         timerTime = millis();
         timerStatus = STATUS_TIMER_CHRONO;
     }
@@ -74,7 +74,7 @@ bool timerChrono::isOverflow(){
     } else if (timerStatus == STATUS_TIMER_PAUSE) {
         return (timerTime < timerTimePause);
     } else {
-        return false;
+        return false;   // Do not overflow on chrono mode
     }    
 }
 
@@ -96,7 +96,7 @@ unsigned long timerChrono::getTimeMillis(){
             else totalMillis = timerTimePause - timerTime;
             break;
 
-        case STATUS_TIMER_CHRONOPAUSE:  // Return time from start to paused
+        case STATUS_TIMER_CHRONOPAUSE:  // Return time since start to paused
             totalMillis = timerTimePause - timerTime;
             break;
 
@@ -110,7 +110,7 @@ unsigned long timerChrono::getTimeMillis(){
 char* timerChrono::getTimeChar() {
     unsigned long totalMillis = getTimeMillis();
 
-    // Extranct minutes and seconds
+    // Extract minutes and seconds
     unsigned long totalSeconds = totalMillis / 1000;
     int minutes = (totalSeconds % 3600) / 60;
     int seconds = totalSeconds % 60;

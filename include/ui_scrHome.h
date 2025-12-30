@@ -63,8 +63,6 @@ extern lv_obj_t * ui_lblHomeTerrazaRiegoMin;
 extern void ui_event_swHomeTerrazaRiego(lv_event_t * e);
 extern lv_obj_t * ui_swHomeTerrazaRiego;
 extern lv_obj_t * ui_lblHomeTerrazaRiegoLastOn;
-extern lv_obj_t * ui_contHomeTerrazaKeyboard;
-extern lv_obj_t * ui_kbHomeTerraza;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

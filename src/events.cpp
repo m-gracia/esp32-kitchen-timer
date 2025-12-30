@@ -2,10 +2,7 @@
 #include "my_debug.h"
 #include "events.h"
 #include "ui.h"
-
-void evVolClick() {
-
-}
+#include "audio.h"
 
 void evTempAddChronoClick(int temp){
     // Start chrono mode
@@ -48,17 +45,34 @@ void evTempAddChronoClick(int temp){
 
 void evTempPlayClick (int temp){
     // Play / Pause timer
+    // If timer is paused stop alarm. It will be activated again on checkTimers() if some timer is overflowed and running
     switch(temp){
-        case 1: timer1.play_pause(); break;
-        case 2: timer2.play_pause(); break;
-        case 3: timer3.play_pause(); break;
-        case 4: timer4.play_pause(); break;
+        case 1: 
+            timer1.play_pause(); 
+            if (timer1.getStatus() == STATUS_TIMER_PAUSE) statusAlarm = false;
+            break;
+
+        case 2: 
+            timer2.play_pause(); 
+            if (timer2.getStatus() == STATUS_TIMER_PAUSE) statusAlarm = false;
+            break;
+        case 3: 
+            timer3.play_pause(); 
+            if (timer3.getStatus() == STATUS_TIMER_PAUSE) statusAlarm = false;
+            break;
+        case 4: 
+            timer4.play_pause(); 
+            if (timer4.getStatus() == STATUS_TIMER_PAUSE) statusAlarm = false;
+            break;
         default: break;
     }	
 }
 
 void evTempStopClick (int temp){
     // Stop timer
+    // Stop alarm. It will be activated again on checkTimers() if some timer is overflowed and running
+    statusAlarm = false;
+
     switch(temp){
         case 1: 
             timer1.stop();
@@ -214,4 +228,23 @@ void evRiegoChange() {
 void evTerrazaRiegoClick() {
     irrigationOnOff = lv_obj_has_state(ui_swHomeTerrazaRiego, LV_STATE_CHECKED);
     bitSet(dataChanged,2);    
+}
+
+void evSoundThemeChange() {
+    int themeid = lv_roller_get_selected(ui_rollSoundTheme);
+    // Change theme
+    setAudioTheme(themeid);
+}
+
+void evSoundVolumeChange() {
+    int volumeid = lv_slider_get_value(ui_sldTempSoundVolume);
+    
+    // Change only label text
+    setAudioVolumeLabel(volumeid);
+}
+
+void evSoundVolumeRelease() {
+    int volumeid = lv_slider_get_value(ui_sldTempSoundVolume);
+    // Change volume
+    setAudioVolume(volumeid);
 }

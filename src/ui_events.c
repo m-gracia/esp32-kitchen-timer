@@ -6,15 +6,6 @@
 #include "ui.h"
 #include "events.h"
 
-void imgTempHeaderVolClick(lv_event_t * e)
-{
-	lv_event_code_t event_code = lv_event_get_code(e);
-
-    if(event_code == LV_EVENT_CLICKED) {
-        evVolClick();
-    }
-}
-
 void imgTempTemp1AddChronoClick(lv_event_t * e)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
@@ -168,4 +159,19 @@ void swHomeTerrazaRiegoClick(lv_event_t * e)
     if(event_code == LV_EVENT_CLICKED) {
         evTerrazaRiegoClick();
     }
+}
+
+void rollSoundThemeChanged(lv_event_t * e)
+{
+	evSoundThemeChange();
+}
+
+void sldTempSoundVolumeChange(lv_event_t * e)
+{
+	evSoundVolumeChange();
+}
+
+void sldTempSoundVolumeRelease(lv_event_t * e)
+{
+	evSoundVolumeRelease();
 }

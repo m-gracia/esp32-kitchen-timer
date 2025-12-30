@@ -17,23 +17,23 @@
 class timerChrono {
 private:
     uint8_t timerStatus;
-    unsigned long timerTime;       // Tiempo de inicio/referencia
-    unsigned long timerTimePause;  // Tiempo acumulado cuando se pausa
-    unsigned long timerLastCheck;  // Ultima comprobacion de cambio
-    char timeBuffer[16];           // Buffer para devolver el texto formateado
+    unsigned long timerTime;       // Start/reference time
+    unsigned long timerTimePause;  // Time when is paused
+    unsigned long timerLastCheck;  // Last change check
+    char timeBuffer[16];           // Timer Buffer
 
 public:
     timerChrono();                 // Constructor
     ~timerChrono();                // Destructor
 
     void start(bool timerMode = TIMER_MODE_TIMER, int minutes = 0); // Start
-    void play_pause();
-    void stop();
-    uint8_t getStatus();
-    bool hasChanged();
-    bool isOverflow();
-    unsigned long getTimeMillis();      
-    char* getTimeChar();           // Retorna el tiempo formateado "MM:SS"
+    void play_pause();      // Play/Pause timer
+    void stop();            // Stop timer
+    uint8_t getStatus();    // Return timer status STATUS_TIMER_XXXX
+    bool hasChanged();      // Return true if timer has changed
+    bool isOverflow();      // Return true if timer is overflowed
+    unsigned long getTimeMillis();  // Returns timer time in milliseconds
+    char* getTimeChar();           // Returns timer time formatted "MM:SS"
 };
 
 #endif

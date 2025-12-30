@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <LittleFS.h>
+#include <EEPROM.h>
 #include <lvgl.h>
 #include "my_def.h"
 #include "my_debug.h"
@@ -7,9 +7,11 @@
 #include "weather.h"
 #include "display.h"
 #include "ui.h"
+#include "audio_i2s.h"
+#include "audio.h"
 
 void checkTimers() {
-  // Check for timers
+  // Update timer labels
   if (timer1.hasChanged())
     lv_label_set_text(ui_lblTempTimer1Count, timer1.getTimeChar());
   if (timer2.hasChanged()) 
@@ -21,8 +23,10 @@ void checkTimers() {
 
   statusAlarm = false;
 
+  // If some timer has overflowed change color to red and activate the alarm
   if (timer1.isOverflow()) {
-    statusAlarm = true;
+    if (timer1.getStatus() == STATUS_TIMER_ON) statusAlarm = true;
+
     ui_object_set_themeable_style_property(ui_contTempTemp1, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
       _ui_theme_color_colorTimerOut);
     ui_object_set_themeable_style_property(ui_contTempTemp1, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
@@ -38,7 +42,7 @@ void checkTimers() {
   }
 
   if (timer2.isOverflow()) {
-    statusAlarm = true;
+    if (timer2.getStatus() == STATUS_TIMER_ON) statusAlarm = true;
     ui_object_set_themeable_style_property(ui_contTempTemp2, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
       _ui_theme_color_colorTimerOut);
     ui_object_set_themeable_style_property(ui_contTempTemp2, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
@@ -54,7 +58,7 @@ void checkTimers() {
   }
 
   if (timer3.isOverflow()) {
-    statusAlarm = true;
+    if (timer3.getStatus() == STATUS_TIMER_ON) statusAlarm = true;
     ui_object_set_themeable_style_property(ui_contTempTemp3, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
       _ui_theme_color_colorTimerOut);
     ui_object_set_themeable_style_property(ui_contTempTemp3, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
@@ -70,7 +74,7 @@ void checkTimers() {
   }
 
   if (timer4.isOverflow()) {
-    statusAlarm = true;
+    if (timer4.getStatus() == STATUS_TIMER_ON) statusAlarm = true;
     ui_object_set_themeable_style_property(ui_contTempTemp4, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_COLOR,
       _ui_theme_color_colorTimerOut);
     ui_object_set_themeable_style_property(ui_contTempTemp4, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BORDER_OPA,
@@ -106,7 +110,7 @@ void setup() {
   #endif
   DEBUG_PRINTLN("Manuel Gracia.Dic-2025");
   DEBUG_PRINTLN("https://github.com/m-gracia");
-  DEBUG_PRINTLN("esp32-kitchen-timer_20251228");
+  DEBUG_PRINTLN("esp32-kitchen-timer_20251230");
 
   // Serial.printf("Tamaño total PSRAM: %d bytes\n", ESP.getPsramSize());
   //   Serial.printf("PSRAM libre: %d bytes\n", ESP.getFreePsram());
@@ -116,13 +120,9 @@ void setup() {
   //   }
 
   // Init Setup
-  LittleFS.begin();
-  // if (LittleFS.exists("/assets/ui_img_stop_png.bin")) {
-  //   Serial.println("Imagen encontrada en Flash!");
-  // } else {
-  //     Serial.println("Error: Imagen NO encontrada en la ruta especificada.");
-  // }
-  initDisplay();
+  setupI2S();
+  initDisplay();    // Must be initiated first
+  setup_audio();
   setup_wifi();
   reconnect_mqtt();
 
@@ -160,7 +160,7 @@ void loop() {
         lv_calendar_set_showed_date(ui_calMain, ntp.year(), ntp.month());
         xSemaphoreGive(xGuiSemaphore);
       }
-      timerNTP = millis() + 30000; //30 sec
+      timerNTP = millis() + 30000; // 30 sec
     }
 
     if (statusMQTT == STATUS_OK) {
@@ -172,7 +172,9 @@ void loop() {
       getWeather();
       timerWeather = millis() + 600000;  // 10 min
     }
-  }  
+  }
 
-  delay(20);  // For WDog feeding
+  playAlarm();
+
+  delay(10);  // For WDog feeding
 }

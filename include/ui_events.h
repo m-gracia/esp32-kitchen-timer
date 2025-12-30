@@ -10,7 +10,6 @@
 extern "C" {
 #endif
 
-void imgTempHeaderVolClick(lv_event_t * e);
 void imgTempTemp1AddChronoClick(lv_event_t * e);
 void imgTempTemp1PlayClick(lv_event_t * e);
 void imgTempTemp1StopClick(lv_event_t * e);
@@ -23,6 +22,9 @@ void imgTempTemp3StopClick(lv_event_t * e);
 void imgTempTemp4AddChronoClick(lv_event_t * e);
 void imgTempTemp4PlayClick(lv_event_t * e);
 void imgTempTemp4StopClick(lv_event_t * e);
+void rollSoundThemeChanged(lv_event_t * e);
+void sldTempSoundVolumeChange(lv_event_t * e);
+void sldTempSoundVolumeRelease(lv_event_t * e);
 void btnTempNewOKClick(lv_event_t * e);
 void arcHomeEntradaLightChange(lv_event_t * e);
 void swHomeEntradaDishClick(lv_event_t * e);

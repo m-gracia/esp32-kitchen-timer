@@ -70,9 +70,7 @@ extern NTP ntp;
 // Wifi
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
-//#include <WiFiMulti.h>
 #include <ArduinoHttpClient.h>  // https://github.com/arduino-libraries/ArduinoHttpClient
-//static WiFiMulti wifi_dev;
 static WiFiClient wifiClient;
 static const char wlan_ssid[] = WIFI_SSID;  // Defined in secrets.h
 static const char wlan_pass[] = WIFI_PASS;  // Defined in secrets.h
@@ -136,7 +134,26 @@ extern timerChrono timer3;
 extern timerChrono timer4;
 
 // Audio
-
+#include <driver/i2s.h>
+#define I2S_DOUT        40
+#define I2S_BCLK        1
+#define I2S_LRC         2
+#define I2S_NUM         I2S_NUM_0
+#define VOLUME_HIGH     100
+#define VOLUME_MID      50
+#define VOLUME_LOW      30
+#define VOLUME_OFF      0
+#define SOUND_THEME_ALARM   0
+#define SOUND_THEME_BEEP    1
+#define SOUND_THEME_BIP     2
+#define SOUND_THEME_BOAT    3
+#define SOUND_THEME_CUCKOO  4
+#define SOUND_THEME_MORSE   5
+#define EEPROM_THEME    0
+#define EEPROM_VOLUME   1
+extern byte soundTheme;
+extern byte soundVolume;
+extern bool testAlarm;
 
 //Status IDs
 #define STATUS_UNK 8        // Unknown
@@ -148,12 +165,13 @@ extern timerChrono timer4;
 //Status variables
 extern unsigned char statusWifi;        // Wifi Status
 extern unsigned char statusMQTT;        // MQTT Status
-extern unsigned char statusAlarm;       // Alarm ON/OFF
+extern bool statusAlarm;                // Alarm ON/OFF
 
 // Run timers
 extern unsigned long timerWeather;
 extern unsigned long timerMQTT;
 extern unsigned long timerNTP;
+extern unsigned long timerAudio;
 
 /* To send changes to MQTT
  *

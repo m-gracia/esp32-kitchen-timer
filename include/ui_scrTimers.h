@@ -79,6 +79,20 @@ extern void ui_event_imgTempTemp4Play(lv_event_t * e);
 extern lv_obj_t * ui_imgTempTemp4Play;
 extern void ui_event_imgTempTemp4Stop(lv_event_t * e);
 extern lv_obj_t * ui_imgTempTemp4Stop;
+extern lv_obj_t * ui_panTempSound;
+extern lv_obj_t * ui_conTempSoundHigh;
+extern lv_obj_t * ui_contTempSoundTheme;
+extern lv_obj_t * ui_lblTempSoundTheme;
+extern void ui_event_rollSoundTheme(lv_event_t * e);
+extern lv_obj_t * ui_rollSoundTheme;
+extern lv_obj_t * ui_contTempSoundVolume;
+extern lv_obj_t * ui_lblTempSoundVolume;
+extern void ui_event_sldTempSoundVolume(lv_event_t * e);
+extern lv_obj_t * ui_sldTempSoundVolume;
+extern lv_obj_t * ui_conTempSoundBtn;
+extern void ui_event_btnTempSoundOk(lv_event_t * e);
+extern lv_obj_t * ui_btnTempSoundOk;
+extern lv_obj_t * ui_lblTempSoundOk;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus

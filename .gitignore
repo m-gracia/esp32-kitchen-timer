@@ -4,3 +4,6 @@
 .vscode/launch.json
 .vscode/ipch
 include/secrets.h
+ui_designer/autosave
+ui_designer/backup
+ui_designer/cache

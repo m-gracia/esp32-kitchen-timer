@@ -6,11 +6,11 @@
 
 const lv_image_dsc_t * getWeatherIcon(int id) {
  switch(id){
-  case 800: return &ui_img_sun_png; // drawBmpS("/weather/clear.bmp",x,y,100,100); break;
+  case 800: return &ui_img_sun_png; break;
   case 801: 
-  case 802: return &ui_img_cloudy_png; // drawBmpS("/weather/fewCloud.bmp",x,y,100,100); break;
+  case 802: return &ui_img_cloudy_png; break;
   case 803: 
-  case 804: return &ui_img_cloud_png; // drawBmpS("/weather/cloud.bmp",x,y,100,100); break;
+  case 804: return &ui_img_cloud_png; break;
   
   case 200: 
   case 201: 
@@ -21,7 +21,7 @@ const lv_image_dsc_t * getWeatherIcon(int id) {
   case 221: 
   case 230: 
   case 231: 
-  case 232: return &ui_img_lightning_png; // drawBmpS("/weather/thunderstorm.bmp",x,y,100,100); break;
+  case 232: return &ui_img_lightning_png; break;
 
   case 300: 
   case 301: 
@@ -31,29 +31,29 @@ const lv_image_dsc_t * getWeatherIcon(int id) {
   case 312: 
   case 313: 
   case 314: 
-  case 321: // drawBmpS("/weather/lightRain.bmp",x,y,100,100); break;
+  case 321: // lightRain; break;
 
   case 500: 
   case 501: 
   case 502: 
   case 503: 
   case 504: 
-  case 511: return &ui_img_rainy_png; // drawBmpS("/weather/lightRain.bmp",x,y,100,100); break;
+  case 511: return &ui_img_rainy_png; break;
   case 520: 
-  case 521: // drawBmpS("/weather/moderateRain.bmp",x,y,100,100); break;
+  case 521: // moderateRain; break;
   case 522: 
-  case 531: return &ui_img_rainy_hard_png; //drawBmpS("/weather/heavyRain.bmp",x,y,100,100); break;
+  case 531: return &ui_img_rainy_hard_png; break;
 
-  case 600: // drawBmpS("/weather/lightSnow.bmp",x,y,100,100); break;
+  case 600: // lightSnow; break;
   case 601: 
-  case 602: //drawBmpS("/weather/snow.bmp",x,y,100,100); break;
+  case 602: // snow; break;
   case 611: 
   case 612: 
   case 615: 
   case 616: 
-  case 620: // drawBmpR("/weather/lightSnow.bmp",x,y,100,100); break;
+  case 620: // lightSnow; break;
   case 621: 
-  case 622: return &ui_img_snowy_png; //drawBmpR("/weather/snow.bmp",x,y,100,100); break;
+  case 622: return &ui_img_snowy_png; break;
 
   case 701: 
   case 711: 
@@ -64,9 +64,9 @@ const lv_image_dsc_t * getWeatherIcon(int id) {
   case 761: 
   case 762: 
   case 771: 
-  case 781: return &ui_img_fog_png; //drawBmpR("/weather/fog.bmp",x,y,100,100); break;
+  case 781: return &ui_img_fog_png; break;
 
-  default: return &ui_img_sun_png; //break; // Draws sun
+  default: return &ui_img_sun_png; break; // Draws sun
  }
 }
 
@@ -111,6 +111,8 @@ void getWeather(){
 
     time_t epochSR = weatherSunrise;
     struct tm *timeinfoSR = localtime(&epochSR);
+    char weatherSunriseChar[6];
+    snprintf(weatherSunriseChar, sizeof(weatherSunriseChar), "%02d:%02d", timeinfoSR->tm_hour, timeinfoSR->tm_min);
     time_t epochSS = weatherSunset;
     struct tm *timeinfoSS = localtime(&epochSS);
 
@@ -127,7 +129,7 @@ void getWeather(){
       lv_label_set_text_fmt(ui_lblMainTemp, "%d C", (int)weatherTemperature);
       lv_label_set_text_fmt(ui_lblMainHumidity, "%d%%", weatherHumidity);
       lv_label_set_text_fmt(ui_lblMainWind, "%d", (int)weatherWind);
-      lv_label_set_text_fmt(ui_lblMainSunrise, "%d:%d", timeinfoSR->tm_hour, timeinfoSR->tm_min);
+      lv_label_set_text_fmt(ui_lblMainSunrise, "%s", weatherSunriseChar);
       lv_label_set_text_fmt(ui_lblMainSunset, "%d:%d", timeinfoSS->tm_hour, timeinfoSS->tm_min);
       xSemaphoreGive(xGuiSemaphore);
     }

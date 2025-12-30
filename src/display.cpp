@@ -44,11 +44,6 @@ void my_disp_flush (lv_display_t *disp, const lv_area_t *area, uint8_t *pixelmap
     uint32_t w = ( area->x2 - area->x1 + 1 );
     uint32_t h = ( area->y2 - area->y1 + 1 );
 
-    //if (LV_COLOR_16_SWAP) {
-    //    size_t len = lv_area_get_size( area );
-    //    lv_draw_sw_rgb565_swap( pixelmap, len );
-    //}
-
     gfx->draw16bitRGBBitmap( area->x1, area->y1, (uint16_t*) pixelmap, w, h );
 
     lv_disp_flush_ready( disp );
@@ -80,9 +75,8 @@ void initDisplay(){
     initTouch();
     DEBUG_TFT_PRINTLN("TOUCH SETUP DONE");
 
-
     // Init Display
-    gfx->begin(); //16000000
+    gfx->begin();
     DEBUG_TFT_PRINTLN("TFT SETUP DONE");
     gfx->fillScreen(BLACK);
 
@@ -110,20 +104,10 @@ void initDisplay(){
 
         lv_log_register_print_cb( my_log_cb );
 
-        // lv_fs_file_t f;
-        // lv_fs_res_t res = lv_fs_open(&f, "S:assets/ui_img_sun_png.bin", LV_FS_MODE_RD);
-        // if(res == LV_FS_RES_OK) {
-        //     Serial.println("LVGL puede abrir el archivo correctamente");
-        //     lv_fs_close(&f);
-        // } else {
-        //     Serial.printf("LVGL NO puede abrir el archivo. Error: %d\n", res);
-        // }
-
-        DEBUG_TFT_PRINTLN("UI INIT START");
         ui_init();
-        DEBUG_TFT_PRINTLN("UI INIT DONE");
+        DEBUG_TFT_PRINTLN("UI_INIT DONE");
 
-        // Crear teclado personalizado
+        // Custom keyboard (NOT TESTED)
         // static const char * kb_map[] = {
         //   "1", "2", "3", LV_SYMBOL_BACKSPACE, "\n",
         //   "4", "5", "6", LV_SYMBOL_CLOSE, "\n",

@@ -30,13 +30,18 @@ timerChrono timer2;
 timerChrono timer3;
 timerChrono timer4;
 
+byte soundTheme = SOUND_THEME_BEEP;
+byte soundVolume = VOLUME_MID;
+bool testAlarm = false;
+
 unsigned char statusWifi = STATUS_UNK;
 unsigned char statusMQTT = STATUS_UNK;
-unsigned char statusAlarm = STATUS_OK;
+bool statusAlarm = false;
 
 unsigned long timerWeather = 0;
 unsigned long timerMQTT = 0;
 unsigned long timerNTP = 0;
+unsigned long timerAudio = 0;
 
 byte dataChanged = 0;
 

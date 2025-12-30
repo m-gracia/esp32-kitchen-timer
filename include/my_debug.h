@@ -11,6 +11,7 @@
 #define DEBUG_MQTT
 #define DEBUG_NTP
 #define DEBUG_TFT
+#define DEBUG_AUDIO
 #define DEBUG_WEB
 //#define DEBUG_WEB_SECRET    // When enabled, URLs with API keys are sended through serial COM
 
@@ -53,6 +54,14 @@
     #define DEBUG_TFT_PRINTLN(x)
     #endif
 
+    #ifdef DEBUG_AUDIO
+    #define DEBUG_AUDIO_PRINT(x)  Serial.print(x)
+    #define DEBUG_AUDIO_PRINTLN(x)  Serial.println(x)
+    #else
+    #define DEBUG_AUDIO_PRINT(x)
+    #define DEBUG_AUDIO_PRINTLN(x)
+    #endif
+
     #ifdef DEBUG_WEB
     #define DEBUG_WEB_PRINT(x)  Serial.print(x)
     #define DEBUG_WEB_PRINTLN(x)  Serial.println(x)
@@ -80,6 +89,8 @@
     #define DEBUG_NTP_PRINTLN(x)
     #define DEBUG_TFT_PRINT(x)
     #define DEBUG_TFT_PRINTLN(x)
+    #define DEBUG_AUDIO_PRINT(x)
+    #define DEBUG_AUDIO_PRINTLN(x)
     #define DEBUG_WEB_PRINT(x)
     #define DEBUG_WEB_PRINTLN(x)
     #define DEBUG_WEB_SECRETPRINT(x)

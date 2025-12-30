@@ -90,3 +90,15 @@ def swHomeTerrazaRiegoClick(event_struct):
 def arcHomeTerrazaRiegoChange(event_struct):
     return
 
+
+def rollSoundThemeChanged(event_struct):
+    return
+
+
+def sldTempSoundVolumeChange(event_struct):
+    return
+
+
+def sldTempSoundVolumeRelease(event_struct):
+    return
+
