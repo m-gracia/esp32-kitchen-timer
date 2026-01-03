@@ -108,9 +108,9 @@ void setup() {
   #ifdef DEBUG
     Serial.begin(115200);
   #endif
-  DEBUG_PRINTLN("Manuel Gracia.Dic-2025");
+  DEBUG_PRINTLN("Manuel Gracia.Ene-2026");
   DEBUG_PRINTLN("https://github.com/m-gracia");
-  DEBUG_PRINTLN("esp32-kitchen-timer_20251230");
+  DEBUG_PRINTLN("esp32-kitchen-timer_20260103");
 
   // Serial.printf("Tamaño total PSRAM: %d bytes\n", ESP.getPsramSize());
   //   Serial.printf("PSRAM libre: %d bytes\n", ESP.getFreePsram());
