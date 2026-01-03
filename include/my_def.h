@@ -116,6 +116,9 @@ static const char weather_server[] = "api.openweathermap.org";
 static const int weather_port = 80;
 static String weather_apikey = WEATHER_APIKEY; // Defined in secrets.h
 static String weather_cityId = WEATHER_CITYID; // Default city ID. Defined in secrets.h
+static const char seeing_server[] = SEEING_SERVER;  // Defined in secrets.h
+static const int seeing_port = SEEING_SERVERPORT;   // Defined in secrets.h
+#define SEEING_PNG_PATH     "/seeing/forecast.png"
 // extern String weatherLocation;          // City
 extern float weatherTemperature;       // Temperature
 extern int weatherHumidity;       // Humidity
@@ -125,6 +128,7 @@ extern float weatherWind;               // Wind speed
 extern float weatherSunrise;            // Sunrise time
 extern float weatherSunset;             // Sunset time
 extern int weatherIcon;                 // Weather icon
+extern lv_image_dsc_t seeing_img_dsc;
 
 // Timers
 #include "timerChrono.h"

@@ -23,6 +23,7 @@ extern void ui_event_imgMainTimer(lv_event_t * e);
 extern lv_obj_t * ui_imgMainTimer;
 extern lv_obj_t * ui_contMain01;
 extern lv_obj_t * ui_contMainWeather01;
+extern lv_obj_t * ui_imgMainSeeing;
 extern lv_obj_t * ui_imgMainForecast;
 extern lv_obj_t * ui_lblMainForecast;
 extern lv_obj_t * ui_lblMainTime;

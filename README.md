@@ -52,8 +52,10 @@ All the screens are designed with [SquareLine Studio](https://squareline.io/) th
 ![8 ohm speaker](doc/images/speaker.png)<br>
 *8 ohm 1W mini speaker*
 
-- **Phone silicone suction pad**<br>
-    Used it to stick the screen to the side of a kitchen furniture. Maybe it is not suitable for other places because is not strong enough, but it works on smooth surfaces.
+- **~~Phone silicone suction pad.~~ Velcro double side tape**<br>
+    ~~Used it to stick the screen to the side of a kitchen furniture. Maybe it is not suitable for other places because is not strong enough, but it works on smooth surfaces.~~
+
+    Do not waste your money on this. It is not strong enough, even on smooth surfaces. I have used double-sided hook-and-loop tape.
 
 ![Phone suction pad](doc/images/phone_suction.png)<br>
 *Phone suction pad*
@@ -92,6 +94,9 @@ Almost everything is included with the Guition module so you don't need to spend
 
     #define WEATHER_APIKEY "your_openweathermap_api_key"
     #define WEATHER_CITYID "3104324"    // Zaragoza,ES Look for your location: https://www.openweathermap.org/find
+
+    #define SEEING_SERVER       "your_server"
+    #define SEEING_SERVERPORT   80
 
     #define WIFI_SSID   "mySSID"        // Your Wifi SSID
     #define WIFI_PASS   "myWIFIPass"    // Your Wifi password
@@ -137,7 +142,7 @@ SquareLine Studio can export the images as a char array. You only must choose "I
 
 There is also a python script on [LVGL github repo](https://github.com/lvgl/lvgl/blob/master/scripts/LVGLImage.py) if you are not using SquareLine Studio. Eg:
 ```
-python3 LVGLImage.py --cf RGB565 image.png
+python3 LVGLImage.py --cf RGB565 image.png --ofmt C -o image.c
 ```
 
 ### Sounds
@@ -151,9 +156,28 @@ xxd -i beepbeep.wav beepbeep.h
 ## Improvements list
 
 - **Astronomy seeing**<br>
-    It would be great to show astronomy seeing forecast, as it shows on webpages like [Meteoblue](https://www.meteoblue.com/es/tiempo/outdoorsports/seeing/) or [ClearOutside](https://clearoutside.com/).
+    ~~It would be great to show astronomy seeing forecast, as it shows on webpages like [Meteoblue](https://www.meteoblue.com/es/tiempo/outdoorsports/seeing/) or [ClearOutside](https://clearoutside.com/).~~
 
-    Maybe I can use this dynamic image?: https://clearoutside.com/forecast_image_small/41.65/-0.88/forecast.png
+    ~~Maybe I can use this dynamic image?: https://clearoutside.com/forecast_image_small/41.65/-0.88/forecast.png~~
+
+    Done. I had a lot of problems with the http access using ArduinoHttpClient because of the chunked and compressed communication, so I decided to download the image to a web server and serve to the ESP32 from there using this "Location" configuration on Apache:
+    ```
+    <Location "/seeing">
+			Header unset Transfer-Encoding
+			SetEnv no-gzip 1
+			AddType image/png .png
+			Header set Connection "close"
+	</Location>
+
+    RewriteEngine on
+	RewriteCond %{HTTPS} off
+	RewriteCond %{REQUEST_URI} !^\/seeing
+	RewriteRule (.*) https://%{SERVER_NAME}$1 [R=301,L]
+    ```
+    This is the crontab that downloads the image every 10 minutes. Change the URL to match your location (latitude/longitude): 
+    ```
+    0,10,20,30,40,50 * * * * root /usr/bin/wget "https://clearoutside.com/forecast_image_small/41.65/-0.88/forecast.png" -O /var/www/html/seeing/forecast.png
+    ```
 
 
 ## Acknowledgements
@@ -168,6 +192,7 @@ Many thanks to the programmers that work and maintain the libraries used on this
 - <https://github.com/bblanchon/ArduinoJson>
 - <https://github.com/sstaub/NTP>
 - <https://github.com/256dpi/arduino-mqtt>
+- <https://github.com/lvandeve/lodepng>
 
 
 ## Disclaimer

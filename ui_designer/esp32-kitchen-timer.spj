@@ -1387,7 +1387,8 @@
                     "InheritedType": 11
                   }
                 ],
-                "saved_objtypeKey": "CONTAINER"
+                "saved_objtypeKey": "CONTAINER",
+                "tree_closed": true
               },
               {
                 "guid": "GUID77771418-727802S506834352",
@@ -3102,7 +3103,8 @@
                     "InheritedType": 11
                   }
                 ],
-                "saved_objtypeKey": "CONTAINER"
+                "saved_objtypeKey": "CONTAINER",
+                "tree_closed": true
               },
               {
                 "guid": "GUID83657765-727832S7674353",
@@ -4149,7 +4151,7 @@
                 "strtype": "OBJECT/Size",
                 "intarray": [
                   95,
-                  380
+                  420
                 ],
                 "InheritedType": 7
               },

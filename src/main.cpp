@@ -170,6 +170,7 @@ void loop() {
 
     if (timerWeather < millis()){
       getWeather();
+      getSeeing();
       timerWeather = millis() + 600000;  // 10 min
     }
   }

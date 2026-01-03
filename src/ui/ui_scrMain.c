@@ -12,6 +12,7 @@ lv_obj_t * ui_imgMainCalendar = NULL;
 lv_obj_t * ui_imgMainTimer = NULL;
 lv_obj_t * ui_contMain01 = NULL;
 lv_obj_t * ui_contMainWeather01 = NULL;
+lv_obj_t * ui_imgMainSeeing = NULL;
 lv_obj_t * ui_imgMainForecast = NULL;
 lv_obj_t * ui_lblMainForecast = NULL;
 lv_obj_t * ui_lblMainTime = NULL;
@@ -116,7 +117,7 @@ void ui_scrMain_screen_init(void)
 
     ui_contMain01 = lv_obj_create(ui_scrMain);
     lv_obj_remove_style_all(ui_contMain01);
-    lv_obj_set_height(ui_contMain01, 380);
+    lv_obj_set_height(ui_contMain01, 420);
     lv_obj_set_width(ui_contMain01, lv_pct(95));
     lv_obj_set_y(ui_contMain01, 0);
     lv_obj_set_x(ui_contMain01, lv_pct(5));
@@ -124,6 +125,14 @@ void ui_scrMain_screen_init(void)
     lv_obj_set_flex_flow(ui_contMain01, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_contMain01, LV_FLEX_ALIGN_SPACE_AROUND, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
     lv_obj_remove_flag(ui_contMain01, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_imgMainSeeing = lv_image_create(ui_contMain01);
+    lv_image_set_src(ui_imgMainSeeing, LV_SYMBOL_DUMMY "No seeing data");
+    lv_obj_set_width(ui_imgMainSeeing, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_imgMainSeeing, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_imgMainSeeing, LV_ALIGN_CENTER);
+    lv_obj_remove_flag(ui_imgMainSeeing, LV_OBJ_FLAG_CLICKABLE);     /// Flags
+    lv_obj_remove_flag(ui_imgMainSeeing, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_contMainWeather01 = lv_obj_create(ui_contMain01);
     lv_obj_remove_style_all(ui_contMainWeather01);
@@ -326,6 +335,7 @@ void ui_scrMain_screen_destroy(void)
     ui_imgMainTimer = NULL;
     ui_contMain01 = NULL;
     ui_contMainWeather01 = NULL;
+    ui_imgMainSeeing = NULL;
     ui_imgMainForecast = NULL;
     ui_lblMainForecast = NULL;
     ui_lblMainTime = NULL;

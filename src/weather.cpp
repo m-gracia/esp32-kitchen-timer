@@ -1,4 +1,5 @@
 #include <time.h>
+#include <lodepng.h>
 #include "weather.h"
 #include "my_def.h"
 #include "my_debug.h"
@@ -82,11 +83,11 @@ void getWeather(){
   
   if(weather_client.get(http_url) != 0){
     DEBUG_WEB_PRINTLN("Weather fail getting data");
-    if (statusWifi != STATUS_WARN) //bitSet(bikeDataChanged,2);
+    if (statusWifi != STATUS_WARN)
     statusWifi = STATUS_WARN;
   } else {
     DEBUG_WEB_PRINTLN("Weather connected OK");
-    if (statusWifi != STATUS_OK) //bitSet(bikeDataChanged,2);
+    if (statusWifi != STATUS_OK)
     statusWifi = STATUS_OK;
     
     String result = weather_client.responseBody();
@@ -136,4 +137,79 @@ void getWeather(){
   }
   weather_client.stop();
   DEBUG_WEB_PRINTLN("Weather Disconnected");
+}
+
+void getSeeing(){
+  WiFiClient wifi_client;
+  String http_url;
+
+  http_url = SEEING_PNG_PATH;
+  DEBUG_WEB_PRINT("Seeing URL: ");
+  DEBUG_WEB_SECRETPRINTLN(http_url);
+
+  HttpClient seeing_client(wifi_client, seeing_server, seeing_port);
+  seeing_client.beginRequest();
+
+  if(seeing_client.get(http_url) != 0){
+    DEBUG_WEB_PRINTLN("Seeing fail getting data");
+    if (statusWifi != STATUS_WARN)
+    statusWifi = STATUS_WARN;
+  } else {
+    DEBUG_WEB_PRINTLN("Seeing connected OK");
+    if (statusWifi != STATUS_OK)
+    statusWifi = STATUS_OK;
+
+    seeing_client.sendHeader("Connection", "close");
+    seeing_client.endRequest();
+
+    // Read png from server
+    int contentLength = seeing_client.contentLength();
+    uint8_t seeingPngBuffer[4000];       // Seeing PNG downloaded
+    int seeingPngSize = 0;
+
+    while (seeing_client.available() && seeingPngSize < contentLength) { 
+      int c = seeing_client.read(); 
+      if (c < 0) 
+        break; 
+      seeingPngBuffer[seeingPngSize++] = (uint8_t)c; 
+    }
+
+    // Decode
+    uint8_t* decoded_pixel_data = NULL;
+    uint32_t width, height;
+    unsigned error = lodepng_decode32(&decoded_pixel_data, &width, &height, 
+      seeingPngBuffer, seeingPngSize);    
+
+    if(error) {
+        DEBUG_WEB_PRINT("Seeing Error LodePNG: ");
+        DEBUG_WEB_PRINTLN(lodepng_error_text(error));
+    } else {
+
+      // Change to RGB565 / 16b
+      uint16_t* final_buffer = (uint16_t*) malloc(width * height * 2);
+      for(uint32_t i = 0; i < width * height; i++) {
+        uint8_t r = decoded_pixel_data[i*4 + 0];
+        uint8_t g = decoded_pixel_data[i*4 + 1];
+        uint8_t b = decoded_pixel_data[i*4 + 2];
+        final_buffer[i] = ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
+      }
+      free(decoded_pixel_data);
+
+      // Move data to img_dsc_t
+      seeing_img_dsc.header.cf = LV_COLOR_FORMAT_RGB565;
+      seeing_img_dsc.header.magic = LV_IMAGE_SRC_VARIABLE;
+      seeing_img_dsc.header.w = width;
+      seeing_img_dsc.header.h = height;
+      seeing_img_dsc.data_size = width * height * 4;
+      seeing_img_dsc.data = (const uint8_t*)final_buffer;
+
+      // Print image
+      if (xSemaphoreTake(xGuiSemaphore, pdMS_TO_TICKS(SEMAPHORE_WAIT)) == pdTRUE) {
+        lv_image_set_src(ui_imgMainSeeing, &seeing_img_dsc);
+        xSemaphoreGive(xGuiSemaphore);
+      }
+    }   
+  }
+  seeing_client.stop();
+  DEBUG_WEB_PRINTLN("Seeing Disconnected"); 
 }

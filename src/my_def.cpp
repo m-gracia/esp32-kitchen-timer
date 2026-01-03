@@ -23,7 +23,8 @@ String weatherDescription;
 float weatherWind;
 float weatherSunrise;
 float weatherSunset;
-int weatherIcon = 0; //Shows nothing
+int weatherIcon = 0;
+lv_image_dsc_t seeing_img_dsc;
 
 timerChrono timer1;
 timerChrono timer2;
