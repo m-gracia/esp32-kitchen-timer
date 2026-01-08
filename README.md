@@ -86,7 +86,7 @@ Almost everything is included with the Guition module so you don't need to spend
 
 3. Plug the speaker into the audio socket. Is the two pin header close to the USB-C connector.
 
-4. Set your VCode + Platformio environment with the project from esp32-bike-computer-main folder. This step is too long to describe here and there is a lot of information on internet about how to do it :wink:
+4. Set your VCode + Platformio environment with the project from esp32-kitchen-timer folder. This step is too long to describe here and there is a lot of information on internet about how to do it :wink:
     - Create a "include/secrets.h" file and fill it with your data. E.g.:
     ```
     #ifndef _SECRETS_H_
