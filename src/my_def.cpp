@@ -4,8 +4,6 @@
 int touch_last_x = 0;
 int touch_last_y = 0;
 
-NTP ntp(wifiUdp);
-
 MQTTClient mqtt;
 
 byte dishwasherOnOff = 0;

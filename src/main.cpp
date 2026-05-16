@@ -108,9 +108,9 @@ void setup() {
   #ifdef DEBUG
     Serial.begin(115200);
   #endif
-  DEBUG_PRINTLN("Manuel Gracia.Ene-2026");
+  DEBUG_PRINTLN("Manuel Gracia.May-2026");
   DEBUG_PRINTLN("https://github.com/m-gracia");
-  DEBUG_PRINTLN("esp32-kitchen-timer_20260103");
+  DEBUG_PRINTLN("esp32-kitchen-timer_20260516");
 
   // Serial.printf("Tamaño total PSRAM: %d bytes\n", ESP.getPsramSize());
   //   Serial.printf("PSRAM libre: %d bytes\n", ESP.getFreePsram());
@@ -126,9 +126,7 @@ void setup() {
   setup_wifi();
   reconnect_mqtt();
 
-  ntp.ruleDST("CEST", Last, Sun, Mar, 2, 120);    // last sunday in march 2:00, timetone +120min (+1 GMT + 1h summertime offset)
-  ntp.ruleSTD("CET", Last, Sun, Oct, 3, 60);      // last sunday in october 3:00, timezone +60min (+1 GMT)
-  ntp.begin(NTP_SERVER);
+  configTzTime(NTP_ZONE, NTP_SERVER);
 
   xTaskCreatePinnedToCore(
       loopOthers, // Function to implement the task
@@ -150,14 +148,22 @@ void loop() {
     if(!mqtt.connected()) reconnect_mqtt();
 
     if(timerNTP < millis()) {
-      ntp.update();
-      DEBUG_NTP_PRINT("NTP TIME: "); DEBUG_NTP_PRINTLN(ntp.formattedTime("%R"));
-      DEBUG_NTP_PRINT("NTP DATE: "); DEBUG_NTP_PRINTLN(ntp.formattedTime("%A, %B %d %Y"));
+      // ntp.update();
+      struct tm timeinfo;
+      configTzTime(NTP_ZONE, NTP_SERVER);
+      getLocalTime(&timeinfo);
+      char bufferTime[8];
+      strftime(bufferTime, sizeof(bufferTime), "%H:%M", &timeinfo);
+      char bufferDate[64];
+      strftime(bufferDate, sizeof(bufferDate), "%A, %B %d %Y", &timeinfo); //Eg: Saturday, May 16 2026
+
+      DEBUG_NTP_PRINT("NTP TIME: "); DEBUG_NTP_PRINTLN(bufferTime);
+      DEBUG_NTP_PRINT("NTP DATE: "); DEBUG_NTP_PRINTLN(bufferDate);
       if (xSemaphoreTake(xGuiSemaphore, pdMS_TO_TICKS(SEMAPHORE_WAIT)) == pdTRUE) {
-        lv_label_set_text(ui_lblMainTime, ntp.formattedTime("%R"));
-        lv_label_set_text(ui_lblMainDate, ntp.formattedTime("%A, %B %d %Y"));
-        lv_calendar_set_today_date(ui_calMain, ntp.year(), ntp.month(), ntp.day());
-        lv_calendar_set_showed_date(ui_calMain, ntp.year(), ntp.month());
+        lv_label_set_text(ui_lblMainTime, bufferTime);
+        lv_label_set_text(ui_lblMainDate, bufferDate);
+        lv_calendar_set_today_date(ui_calMain, timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday);
+        lv_calendar_set_showed_date(ui_calMain, timeinfo.tm_year + 1900, timeinfo.tm_mon + 1);
         xSemaphoreGive(xGuiSemaphore);
       }
       timerNTP = millis() + 30000; // 30 sec

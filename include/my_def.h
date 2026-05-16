@@ -61,11 +61,8 @@ extern int touch_last_y;
 static TAMC_GT911 ts = TAMC_GT911(TOUCH_GT911_SDA, TOUCH_GT911_SCL, TOUCH_GT911_INT, TOUCH_GT911_RST, max(TOUCH_MAP_X1, TOUCH_MAP_X2), max(TOUCH_MAP_Y1, TOUCH_MAP_Y2));
 
 // NTP
-#include <WiFiUdp.h>
-#include <NTP.h>
 #define NTP_SERVER      "0.pool.ntp.org"
-static WiFiUDP wifiUdp;
-extern NTP ntp;
+#define NTP_ZONE        "CET-1CEST,M3.5.0,M10.5.0/3" //TZ_Europe_Madrid
 
 // Wifi
 #include <WiFi.h>

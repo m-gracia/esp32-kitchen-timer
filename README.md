@@ -190,7 +190,6 @@ Many thanks to the programmers that work and maintain the libraries used on this
 - <https://github.com/TAMCTec/gt911-arduino>
 - <https://github.com/moononournation/Arduino_GFX>
 - <https://github.com/bblanchon/ArduinoJson>
-- <https://github.com/sstaub/NTP>
 - <https://github.com/256dpi/arduino-mqtt>
 - <https://github.com/lvandeve/lodepng>
 
