@@ -160,8 +160,9 @@ void loop() {
       DEBUG_NTP_PRINT("NTP TIME: "); DEBUG_NTP_PRINTLN(bufferTime);
       DEBUG_NTP_PRINT("NTP DATE: "); DEBUG_NTP_PRINTLN(bufferDate);
       if (xSemaphoreTake(xGuiSemaphore, pdMS_TO_TICKS(SEMAPHORE_WAIT)) == pdTRUE) {
-        lv_label_set_text(ui_lblMainTime, bufferTime);
-        lv_label_set_text(ui_lblMainDate, bufferDate);
+        lv_label_set_text_fmt(ui_lblMainTime, bufferTime);
+        lv_label_set_text_fmt(ui_lblTempHeader, "TEMPORIZADORES - %s", bufferTime);
+        lv_label_set_text_fmt(ui_lblMainDate, bufferDate);
         lv_calendar_set_today_date(ui_calMain, timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday);
         lv_calendar_set_showed_date(ui_calMain, timeinfo.tm_year + 1900, timeinfo.tm_mon + 1);
         xSemaphoreGive(xGuiSemaphore);
