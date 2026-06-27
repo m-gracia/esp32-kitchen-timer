@@ -57,7 +57,7 @@ void playSoundVol(const uint8_t* data, uint32_t len, int volume) {
     }
 }
 
-void playTone(float frecuency, float duration, int volume) {
+void playTone(float frequency, float duration, int volume) {
     const int sample_rate = 11025; // Same rate as driver.sample_rate
     size_t bytes_escritos;
     float factorVolumen = volume / 100.0f;
@@ -73,7 +73,7 @@ void playTone(float frecuency, float duration, int volume) {
         for (int j = 0; j < chunk_size; j++) {
             // Fórmula de la onda senoidal: A * sin(2 * PI * f * t)
             float t = (float)(i + j) / sample_rate;
-            float valor = sin(2 * M_PI * frecuency * t);
+            float valor = sin(2 * M_PI * frequency * t);
             
             // Set volume
             samples[j] = (int16_t)(valor * 32760 * factorVolumen);
